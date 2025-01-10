@@ -43,6 +43,14 @@ h2 {
   font-weight: 400;
   font-size: 2rem;
 }
+#champ {
+  font-size: 6rem;
+  font-weight: bold;
+  font-style: italic;
+  background: linear-gradient(to right, #f32170, #ff6b08, #cf23cf, #eedd44);
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+}
 @media only screen and (max-width: 768px) {
   h1 {
     font-size: 3rem;
