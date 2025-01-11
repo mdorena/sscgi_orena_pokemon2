@@ -22,52 +22,218 @@ class Pokemon {
     this.defense = defense;
     this.damage = damage;
     this.criticalChance = criticalChance;
-    this.attackName = `${type} Attack!`;
+    this.attackName = [
+      `${type} Basic Attack!`,
+      `${type} Secondary Attack!`,
+      `${type} ULTIMATE Attack!`,
+    ];
+    this.cooldown = [
+      [true, true, true, true, true],
+      [true, true, true, true],
+    ];
     this.isFainted = false;
   }
   attack(opponent) {
+    // declaring the damage of the attacks
+    let damageToOpponent;
+    // identifying whats attack used
+    let isUltimateReady = this.cooldown[0].every(function (coold) {
+      return coold == true;
+    });
+    let isSecondaryReady = this.cooldown[1].every(function (coold) {
+      return coold == true;
+    });
+    let useAttack;
+    this.displayAvailabeAttack(isSecondaryReady, isUltimateReady);
+    if (isUltimateReady) {
+      useAttack = 2;
+      damageToOpponent = this.damage * 2.5;
+      this.cooldown.forEach(function (cooldown, index) {
+        if (index == 0) {
+          cooldown.forEach(function (coold, index) {
+            cooldown[index] = false;
+          });
+        } else {
+          cooldown.sort();
+          cooldown[0] = true;
+        }
+      });
+    } else if (isSecondaryReady) {
+      useAttack = 1;
+      damageToOpponent = this.damage * 1.5;
+      this.cooldown.forEach(function (cooldown, index) {
+        if (index == 1) {
+          cooldown.forEach(function (coold, index) {
+            cooldown[index] = false;
+          });
+        } else {
+          cooldown.sort();
+          cooldown[0] = true;
+        }
+      });
+    } else {
+      useAttack = 0;
+      damageToOpponent = this.damage;
+      this.cooldown.forEach(function (cooldown, index) {
+        cooldown.sort();
+        cooldown[0] = true;
+      });
+    }
+
     // switch is to indetify type and change background color based on it
     switch (this.type) {
       case "Water":
         console.log(
-          `${this.name} used an %c💧 ${this.attackName}`,
-          "background: #489fb5; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;"
+          `${this.name} used an %c💧 ${this.attackName[useAttack]}`,
+          "background: #489fb5; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
+          ` on ${opponent.name}`
         );
         break;
       case "Fire":
         console.log(
-          `${this.name} used an %c🔥 ${this.attackName}`,
+          `${this.name} used an %c🔥 ${this.attackName[useAttack]}`,
           "background: #d00000; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
-          ` on ${opponent.name}, `
+          ` on ${opponent.name}`
         );
         break;
       case "Electric":
         console.log(
-          `${this.name} used an %c⚡ ${this.attackName}`,
+          `${this.name} used an %c⚡ ${this.attackName[useAttack]}`,
           "background: #ffd60a; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
-          ` on ${opponent.name}, `
+          ` on ${opponent.name} `
         );
         break;
         z;
       case "Poison":
         console.log(
-          `${this.name} used an %c☠️ ${this.attackName}`,
+          `${this.name} used an %c☠️ ${this.attackName[useAttack]}`,
           "background: #001219; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
-          ` on ${opponent.name}, `
+          ` on ${opponent.name} `
         );
         break;
       case "Flying":
         console.log(
-          `${this.name} used an %c🌟${this.attackName}`,
+          `${this.name} used an %c🌟${this.attackName[useAttack]}`,
           "background: linear-gradient(to bottom, #ffffcc 0%, #00ffcc 100%); color: black; padding: 10px; font-weight: bold; border: solid 1px black; font-size: 20px; border-radius: 10px; display: inline-block;",
-          ` on ${opponent.name}, `
+          ` on ${opponent.name} `
         );
         break;
       case "Legendary":
         console.log(
-          `${this.name} used an %c${this.attackName}`,
-          "background: linear-gradient(to bottom, #ffffcc 0%, #00ffcc 100%); color: black; padding: 10px; font-weight: bold; border:  solid 1px black; 2px; font-size: 20px; border-radius: 10px;",
-          ` on ${opponent.name}, `
+          `${this.name} used an %c${this.attackName[useAttack]} ⚔️`,
+          "background: linear-gradient(to bottom, #ff7f50 0%, #1e90ff 100%); color: white; padding: 10px; font-weight: bold; border: solid 1px black; font-size: 20px; border-radius: 10px;",
+          ` on ${opponent.name} `
+        );
+
+        break;
+    }
+    // critical hit is depends on outcome its either true or false
+    // critaacal probability depends on critical chance
+    if (this.criticalHit(this.criticalChance)) {
+      console.log(
+        `%c💥 Critical hit! Damage: ${damageToOpponent * 2} `,
+        "background: #d62828; color: #ffffff; padding: 10px; font-size: 15px; border-radius: 5px; display: inline-block;"
+      );
+      opponent.damageReceived(damageToOpponent * 2);
+    } else {
+      console.log(
+        `%c⚔️ Regular hit! Damage: ${damageToOpponent} `,
+        "background: #f77f00; color: #ffffff; padding: 10px; font-size: 15px; border-radius: 5px; display: inline-block;"
+      );
+      opponent.damageReceived(damageToOpponent);
+    }
+  }
+  displayAvailabeAttack(skill2, ultimate) {
+    let skill2Status = skill2 ? "Ready ⚔️" : "On cooldown ⏳";
+    let ultimateStatus = ultimate ? "Ready ⚔️" : "On cooldown ⏳";
+    console.log(
+      `%cSecondary Attack: ${skill2Status} | Ultimate Attack: ${ultimateStatus}`,
+      "background: #007BFF; color: white; padding: 10px; font-size: 15px; border-radius: 10px; font-weight: bold;"
+    );
+  }
+  // gameMasterAttack
+  gameMAsterAttack(opponent, numberOfAttack) {
+    // declaring the damage of the attacks
+    let damageToOpponent;
+    let useAttack;
+    if (numberOfAttack == 2) {
+      useAttack = 2;
+      damageToOpponent = this.damage * 2.5;
+      this.cooldown.forEach(function (cooldown, index) {
+        if (index == 0) {
+          cooldown.forEach(function (coold, index) {
+            cooldown[index] = false;
+          });
+        } else {
+          cooldown.sort();
+          cooldown[0] = true;
+        }
+      });
+    } else if (numberOfAttack == 1) {
+      useAttack = 1;
+      damageToOpponent = this.damage * 1.5;
+      this.cooldown.forEach(function (cooldown, index) {
+        if (index == 1) {
+          cooldown.forEach(function (coold, index) {
+            cooldown[index] = false;
+          });
+        } else {
+          cooldown.sort();
+          cooldown[0] = true;
+        }
+      });
+    } else if (numberOfAttack == 0) {
+      useAttack = 0;
+      damageToOpponent = this.damage;
+      this.cooldown.forEach(function (cooldown, index) {
+        cooldown.sort();
+        cooldown[0] = true;
+      });
+    }
+
+    // switch is to indetify type and change background color based on it
+    switch (this.type) {
+      case "Water":
+        console.log(
+          `${this.name} used an %c💧 ${this.attackName[useAttack]}`,
+          "background: #489fb5; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
+          ` on ${opponent.name}`
+        );
+        break;
+      case "Fire":
+        console.log(
+          `${this.name} used an %c🔥 ${this.attackName[useAttack]}`,
+          "background: #d00000; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
+          ` on ${opponent.name}`
+        );
+        break;
+      case "Electric":
+        console.log(
+          `${this.name} used an %c⚡ ${this.attackName[useAttack]}`,
+          "background: #ffd60a; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
+          ` on ${opponent.name} `
+        );
+        break;
+        z;
+      case "Poison":
+        console.log(
+          `${this.name} used an %c☠️ ${this.attackName[useAttack]}`,
+          "background: #001219; color: white; padding: 10px; font-size: 15px; border-radius: 10px; display: inline-block;",
+          ` on ${opponent.name} `
+        );
+        break;
+      case "Flying":
+        console.log(
+          `${this.name} used an %c🌟${this.attackName[useAttack]}`,
+          "background: linear-gradient(to bottom, #ffffcc 0%, #00ffcc 100%); color: black; padding: 10px; font-weight: bold; border: solid 1px black; font-size: 20px; border-radius: 10px; display: inline-block;",
+          ` on ${opponent.name} `
+        );
+        break;
+      case "Legendary":
+        console.log(
+          `${this.name} used an %c${this.attackName[useAttack]} ⚔️`,
+          "background: linear-gradient(to bottom, #ff7f50 0%, #1e90ff 100%); color: white; padding: 10px; font-weight: bold; border: solid 1px black; font-size: 20px; border-radius: 10px;",
+          ` on ${opponent.name} `
         );
         break;
     }
@@ -76,22 +242,24 @@ class Pokemon {
     // critaacal probability depends on critical chance
     if (this.criticalHit(this.criticalChance)) {
       console.log(
-        `%c💥 Critical hit! Damage: ${this.damage * 2} `,
+        `%c💥 Critical hit! Damage: ${damageToOpponent * 2} `,
         "background: #d62828; color: #ffffff; padding: 10px; font-size: 15px; border-radius: 5px; display: inline-block;"
       );
-      opponent.damageReceived(this.damage * 2);
+      opponent.damageReceived(damageToOpponent * 2);
     } else {
       console.log(
-        `%c⚔️ Regular hit! Damage: ${this.damage} `,
+        `%c⚔️ Regular hit! Damage: ${damageToOpponent} `,
         "background: #f77f00; color: #ffffff; padding: 10px; font-size: 15px; border-radius: 5px; display: inline-block;"
       );
-      opponent.damageReceived(this.damage);
+      opponent.damageReceived(damageToOpponent);
     }
   }
   // evovle if reach lvl 15
   pokemonEvolve() {
     this.type = "Legendary";
-    this.attackName = "Legendary " + this.attackName;
+    this.attackName = this.attackName.map(function (attack) {
+      return "Legendary " + attack;
+    });
     console.log(
       `%c🌟 ${this.name} is now a Legendary Pokemon!!!`,
       "background: linear-gradient(to bottom, #ffffcc 0%, #00ffcc 100%); color: black; padding: 15px; font-weight: bold; font-size: 20px; border-radius: 10px; display: inline-block;"
@@ -155,26 +323,42 @@ class Pokemon {
       this.defense += 25;
       this.maxHp *= 2;
       this.criticalChance += 0.05;
+      // sort to make sure that i remove a false item in array
+      this.cooldown[1].sort();
+      // remove 1 match calldown for 2nd Skill
+      let remove2ndCooldown = this.cooldown[1].shift();
     } else if (this.level == 10) {
       this.damage = Math.round(this.damage * 2.5);
       this.defense += 50;
       this.maxHp = Math.round(this.maxHp * 2.5);
       this.criticalChance += 0.15;
+      // sort to make sure that i remove a false item in array
+      this.cooldown[0].sort();
+      // remove 1 match calldown for Ultimate Skill
+      let removeUltimateCooldown = this.cooldown[0].shift();
     } else if (this.level == 15) {
       this.damage = Math.round(this.damage * 3);
       this.defense += 100;
       this.maxHp = Math.round(this.maxHp * 3);
       this.criticalChance += 0.2;
       this.pokemonEvolve();
+      // sort to make sure that i remove a false item in array
+      this.cooldown[0].sort();
+      this.cooldown[1].sort();
+      // remove 1 match calldown for Ultimate and 2nd Skill
+      let removeUltimate1Cooldown = this.cooldown[0].shift();
+      let removeSecond1Cooldown = this.cooldown[1].shift();
     } else {
       // normal level up
       this.damage = Math.round(this.damage * 1.5);
       this.defense += 10;
       this.maxHp = Math.round(this.maxHp * 1.5);
     }
-
     console.log(
-      `%c❤️ MAX-HP ${this.hp}| 💔 HP ${this.hp} | 🛡️ DEFENSE ${
+      `This is second attack: ${this.cooldown[1]}\nThis is ultimate attack: ${this.cooldown[0]}`
+    );
+    console.log(
+      `%c 💔 HP ${this.hp} | ❤️ MAX-HP ${this.maxHp} | 🛡️ DEFENSE ${
         this.defense
       } | ⚔️ DAMAGE ${this.damage} | 🎯 CRIT. CHANCE ${Math.round(
         this.criticalChance * 100
@@ -210,11 +394,100 @@ class Trainer {
         console.log(
           `%c${i + 1}. ${arrayMadeinBattle[i].name} | LVL: ${
             arrayMadeinBattle[i].level
-          } | HP: ${arrayMadeinBattle[i].hp} | TYPE: ${
-            arrayMadeinBattle[i].type
+          } | HP: ${arrayMadeinBattle[i].hp} | MAX-HP: ${
+            arrayMadeinBattle[i].maxHp
+          } | TYPE: ${arrayMadeinBattle[i].type} | DEFENSE: ${
+            arrayMadeinBattle[i].defense
           }`,
           "background: #007BFF; padding: 10px; color: white; margin: 2px; border-radius: 1rem; font-weight: bold; display: inline-block;"
         );
+      }
+    }
+  }
+  checkAvailableAttack(pokemon) {
+    // identifying whats attack used
+    let isUltimateReady = pokemon.cooldown[0].every(function (coold) {
+      return coold == true;
+    });
+    let isSecondaryReady = pokemon.cooldown[1].every(function (coold) {
+      return coold == true;
+    });
+    pokemon.displayAvailabeAttack(isSecondaryReady, isUltimateReady);
+    console.log(
+      `%cHey ${this.name}, Its your pokemon: ${pokemon.name} turn to attack!`,
+      "background: #28a745; color: white; padding: 10px; font-size: 15px; border-radius: 10px;"
+    );
+    if (isUltimateReady && isSecondaryReady) {
+      let attackChoice = prompt(
+        `Which attack would you like to use?\n1. Basic Attack\n2. Secondary Attack\n3. ULTIMATE Attack`
+      );
+      // Check if the user cancelled the prompt
+      if (attackChoice === null) {
+        console.log(`${this.name} cancelled, Exiting..`);
+        return;
+      }
+      switch (attackChoice) {
+        case "1":
+          return 0;
+        case "2":
+          return 1;
+        case "3":
+          return 2;
+        default:
+          alert("Invalid choice. Please try again.");
+          return this.checkAvailableAttack(pokemon);
+      }
+    } else if (isUltimateReady) {
+      let attackChoice = prompt(
+        `Which attack would you like to use?\n1. Basic Attack\n2. ULTIMATE Attack`
+      );
+      // Check if the user cancelled the prompt
+      if (attackChoice === null) {
+        console.log(`${this.name} cancelled, Exiting..`);
+        return;
+      }
+      switch (attackChoice) {
+        case "1":
+          return 0;
+        case "2":
+          return 2;
+        default:
+          alert("Invalid choice. Please try again.");
+          return this.checkAvailableAttack(pokemon);
+      }
+    } else if (isSecondaryReady) {
+      let attackChoice = prompt(
+        `Which attack would you like to use?\n1. Basic Attack\n2. Secondary Attack`
+      );
+      // Check if the user cancelled the prompt
+      if (attackChoice === null) {
+        console.log(`${this.name} cancelled, Exiting..`);
+        return;
+      }
+      switch (attackChoice) {
+        case "1":
+          return 0;
+        case "2":
+          return 1;
+        default:
+          alert("Invalid choice. Please try again.");
+          return this.checkAvailableAttack(pokemon);
+      }
+    } else {
+      let attackChoice = prompt(
+        `Which attack would you like to use?\n1. Basic Attack`
+      );
+      // Check if the user cancelled the prompt
+      if (attackChoice === null) {
+        console.log(`${this.name} cancelled, Exiting..`);
+        return;
+      }
+      switch (attackChoice) {
+        case "1":
+          return 0;
+        default:
+          alert("Invalid choice. Please try again.");
+          return this.checkAvailableAttack(pokemon);
       }
     }
   }
@@ -242,7 +515,7 @@ class Trainer {
 }
 // for game master
 class gameMaster {
-  constructor(name, trainers, pokemonList) {
+  constructor(name, trainers, pokemonList, isPlaying) {
     this.name = name;
     this.trainers = trainers;
     this.pokemonList = pokemonList;
@@ -252,6 +525,7 @@ class gameMaster {
     this.numOfTrainer = 0;
     this.numOfPokemon = 0;
     this.winner;
+    this.isPlaying = isPlaying;
   }
   // Welcome function is to display all contestan/trainers before it start
   welcome() {
@@ -311,6 +585,10 @@ class gameMaster {
   }
   // This is function is for identifying how many the trainer are
   enterTrainer() {
+    let gameMaster;
+    if (this.isPlaying) {
+      gameMaster = new Trainer(this.name);
+    }
     while (true) {
       let numberOfTrainer = prompt(
         `HELLO ${this.name}! Please enter the number of trainers.`
@@ -321,17 +599,23 @@ class gameMaster {
       }
       if (numberOfTrainer == "5") {
         this.numOfTrainer = 5;
-        this.enterPokemon();
+        this.isPlaying
+          ? this.removeTrainerRandomlyAndAddGameMaste(gameMaster)
+          : this.enterPokemon();
         break;
       } else if (numberOfTrainer == "4") {
         this.randomRemoveTrainer(1);
         this.numOfTrainer = 4;
-        this.enterPokemon();
+        this.isPlaying
+          ? this.removeTrainerRandomlyAndAddGameMaste(gameMaster)
+          : this.enterPokemon();
         break;
       } else if (numberOfTrainer == "3") {
         this.randomRemoveTrainer(2);
         this.numOfTrainer = 3;
-        this.enterPokemon();
+        this.isPlaying
+          ? this.removeTrainerRandomlyAndAddGameMaste(gameMaster)
+          : this.enterPokemon();
         break;
       } else {
         alert(
@@ -658,7 +942,13 @@ class gameMaster {
         const randomInt = Math.floor(Math.random() * 2) + 1;
         // 1 means plyer 1 fist
         if (randomInt == 1) {
-          pokemon1.attack(pokemon2);
+          if (trainer1.name == this.name) {
+            let attackNum = trainer1.checkAvailableAttack(pokemon1);
+            pokemon1.gameMAsterAttack(pokemon2, attackNum);
+          } else {
+            pokemon1.attack(pokemon2);
+          }
+
           if (pokemon2.hp <= 0) {
             console.log(
               `%c🏆 ${pokemon1.name} has gained the victory over ${pokemon2.name} `,
@@ -672,7 +962,12 @@ class gameMaster {
             trainer2Pokemons.push(pokemon2);
             break;
           } else {
-            pokemon2.attack(pokemon1);
+            if (trainer2.name == this.name) {
+              let attackNum = trainer2.checkAvailableAttack(pokemon2);
+              pokemon2.gameMAsterAttack(pokemon1, attackNum);
+            } else {
+              pokemon2.attack(pokemon1);
+            }
             if (pokemon1.hp <= 0) {
               console.log(
                 `%c🏆 ${pokemon2.name} has gained the victory over ${pokemon1.name} `,
@@ -689,7 +984,12 @@ class gameMaster {
         }
         // this is player 2 first
         else {
-          pokemon2.attack(pokemon1);
+          if (trainer2.name == this.name) {
+            let attackNum = trainer2.checkAvailableAttack(pokemon2);
+            pokemon2.gameMAsterAttack(pokemon1, attackNum);
+          } else {
+            pokemon2.attack(pokemon1);
+          }
           if (pokemon1.hp <= 0) {
             console.log(
               `%c🏆 ${pokemon2.name} has gained the victory over ${pokemon1.name} `,
@@ -702,7 +1002,12 @@ class gameMaster {
             trainer1Pokemons.push(pokemon1);
             break;
           } else {
-            pokemon1.attack(pokemon2);
+            if (trainer1.name == this.name) {
+              let attackNum = trainer1.checkAvailableAttack(pokemon1);
+              pokemon1.gameMAsterAttack(pokemon2, attackNum);
+            } else {
+              pokemon1.attack(pokemon2);
+            }
             if (pokemon2.hp <= 0) {
               console.log(
                 `%c🏆 ${pokemon1.name} has gained the victory over ${pokemon2.name} `,
@@ -726,6 +1031,12 @@ class gameMaster {
       let randomIndex = Math.floor(Math.random() * this.trainers.length);
       this.trainers.splice(randomIndex, 1);
     }
+  }
+  removeTrainerRandomlyAndAddGameMaste(gameMaster) {
+    // random choose for battle in tournament
+    let randomIndex = Math.floor(Math.random() * this.trainers.length);
+    this.trainers.splice(randomIndex, 1, gameMaster);
+    this.enterPokemon();
   }
 
   distributePokemon() {
@@ -770,9 +1081,6 @@ class gameMaster {
 
     let currentMatch = 0;
 
-    trainers.forEach(function (trainer) {
-      trainer.allPokemonBecomeStrong();
-    });
     let wBracket1 = trainers.shift();
     let wBracket2 = trainers.shift();
     let wBracket3 = trainers.shift();
@@ -861,8 +1169,8 @@ class gameMaster {
             "font-size: 20px; font-weight: bold"
           );
           console.log(
-            `%c${trainer2.name} has been sent to the loser bracket`,
-            "color: grey; font-size:15px"
+            `%c💀 ${trainer2.name} has been lose`,
+            "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
           );
           trainer1.allPokemonBecomeStrong();
           trainer2.allPokemonBecomeStrong();
@@ -940,7 +1248,12 @@ class gameMaster {
           const randomInt = Math.floor(Math.random() * 2) + 1;
           // 1 means plyer 1 fist
           if (randomInt == 1) {
-            pokemon1.attack(pokemon2);
+            if (trainer1.name == this.name) {
+              let attackNum = trainer1.checkAvailableAttack(pokemon1);
+              pokemon1.gameMAsterAttack(pokemon2, attackNum);
+            } else {
+              pokemon1.attack(pokemon2);
+            }
             if (pokemon2.hp <= 0) {
               console.log(
                 `%c🏆 ${pokemon1.name} has gained the victory over ${pokemon2.name} `,
@@ -955,7 +1268,13 @@ class gameMaster {
 
               break;
             } else {
-              pokemon2.attack(pokemon1);
+              if (trainer2.name == this.name) {
+                let attackNum = trainer2.checkAvailableAttack(pokemon2);
+                pokemon2.gameMAsterAttack(pokemon1, attackNum);
+              } else {
+                pokemon2.attack(pokemon1);
+              }
+
               if (pokemon1.hp <= 0) {
                 console.log(
                   `%c🏆 ${pokemon2.name} has gained the victory over ${pokemon1.name} `,
@@ -973,7 +1292,13 @@ class gameMaster {
           }
           // this is player 2 first
           else {
-            pokemon2.attack(pokemon1);
+            if (trainer2.name == this.name) {
+              let attackNum = trainer2.checkAvailableAttack(pokemon2);
+              pokemon2.gameMAsterAttack(pokemon1, attackNum);
+            } else {
+              pokemon2.attack(pokemon1);
+            }
+
             if (pokemon1.hp <= 0) {
               console.log(
                 `%c🏆 ${pokemon2.name} has gained the victory over ${pokemon1.name} `,
@@ -987,7 +1312,12 @@ class gameMaster {
 
               break;
             } else {
-              pokemon1.attack(pokemon2);
+              if (trainer1.name == this.name) {
+                let attackNum = trainer1.checkAvailableAttack(pokemon1);
+                pokemon1.gameMAsterAttack(pokemon2, attackNum);
+              } else {
+                pokemon1.attack(pokemon2);
+              }
               if (pokemon2.hp <= 0) {
                 console.log(
                   `%c🏆 ${pokemon1.name} has gained the victory over ${pokemon2.name} `,
@@ -1111,11 +1441,46 @@ let Misty = new Trainer("Misty");
 let gameMasterName = prompt("WELCOME GAME MASTER! Please enter your name:");
 // check if the input is empty
 if (checkIfEmpty(gameMasterName)) {
+  gameMasterName = gameMasterName.toLowerCase();
+  gameMasterName =
+    gameMasterName.charAt(0).toUpperCase() + gameMasterName.slice(1);
+  let play, newGameMaster;
+  let isDecided = true;
+  //  while loop switch for the choices of the game master
+  while (isDecided) {
+    play = prompt(
+      `Hello Game master ${gameMasterName}! Are you going to play in the tournament?!\n\n1. Yes\n2. No`
+    );
+    if (play === null) {
+      console.log(`${this.name} cancelled, Exiting..`);
+      break; // Exit the loop if user cancels
+    }
+    switch (play) {
+      case "1":
+        isDecided = false;
+        newGameMaster = new gameMaster(
+          gameMasterName,
+          [Misty, Asahi, Ash, Agatha, Kahili],
+          pokemonList,
+          true
+        );
+        // Call start game function here
+        break;
+      case "2":
+        isDecided = false;
+        newGameMaster = new gameMaster(
+          gameMasterName,
+          [Misty, Asahi, Ash, Agatha, Kahili],
+          pokemonList,
+          false
+        );
+        break;
+      default:
+        alert(
+          "Invalid choice. Please try again.\nChoose only between number 1 and 2 "
+        );
+    }
+    newGameMaster.mainMenu();
+  }
   // if the return value is true then creatw a gameMaster and open mainMenu
-  let newGameMaster = new gameMaster(
-    gameMasterName.toUpperCase(),
-    [Misty, Asahi, Ash, Agatha, Kahili],
-    pokemonList
-  );
-  newGameMaster.mainMenu();
 }
