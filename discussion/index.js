@@ -159,7 +159,7 @@ console.log(`This is a slice: ${sliceArrayA}`);
 
 console.log(countries);
 let sliceArrayA2 = countries.slice(1, 4);
-console.log(sliceArrayA2);
+console.log(`Slice 1-4 ${sliceArrayA2}`);
 
 console.log(countries);
 let sliceArrayA3 = countries.slice(-4);
@@ -374,7 +374,7 @@ console.log(filterProducts.map((product) => product.toLowerCase()));
 - The currentValue is the current/next element in the array being evaluated in each iteration.
 */
 let iteration = 0;
-
+console.log(numbers);
 let reduceArray = numbers.reduce(function (x, y) {
   console.warn(`Current iteration: ${++iteration}`);
   console.log("Accumulator: " + x);
