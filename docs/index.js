@@ -658,7 +658,7 @@ class gameMaster {
     }
     while (true) {
       let numberOfTrainer = prompt(
-        `HELLO ${this.name}! Please enter the number of trainers.`
+        `HELLO ${this.name}! Please enter the number of trainers.\nChoose between 3, 4 and 5`
       );
       if (numberOfTrainer === null) {
         console.log(`${this.name} cancelled, Exiting..`);
@@ -697,13 +697,21 @@ class gameMaster {
   // for identifiying how many pokemons are
   enterPokemon() {
     while (true) {
-      let numOfPokemon = prompt(`Next, please enter the number of Pokemon.`);
+      let numOfPokemon = prompt(
+        `Next, please enter the number of Pokemon.\nChoose Between 1, 2, 3, 4 and 5`
+      );
       if (numOfPokemon === null) {
         console.log(`${this.name} cancelled, Exiting..`);
         break; // Exit the loop if user cancels
       }
 
-      if (numOfPokemon == "5" || numOfPokemon == "4" || numOfPokemon == "3") {
+      if (
+        numOfPokemon == "5" ||
+        numOfPokemon == "4" ||
+        numOfPokemon == "3" ||
+        numOfPokemon == "2" ||
+        numOfPokemon == "1"
+      ) {
         this.numOfPokemon = parseInt(numOfPokemon); // Assign number of Pokemon as integer
         this.distributePokemon(); //Randomized the pokemons each trainer
         this.startMatch(); //Start the tournamnt
@@ -711,7 +719,7 @@ class gameMaster {
         break;
       } else {
         alert(
-          "Invalid choice. Please try again.\nChoose only between number 3, 4 and 5 "
+          "Invalid choice. Please try again.\nChoose only between number 1, 2, 3, 4 and 5 "
         );
         // if the user input invalid
       }
