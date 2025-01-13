@@ -771,6 +771,11 @@ class gameMaster {
         } vs ${trainer2.name} `,
         "background: linear-gradient(to bottom, #33ccff 0%, #ff0000 100%); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px;"
       );
+      alert(
+        `${gameNumber.toUpperCase()} - UPPER BRACKET MATCH IS BETWEEN ${
+          trainer1.name
+        } vs ${trainer2.name} `
+      );
     } else if (gameNumber == "game3") {
       // using shit the get the first trainer
       trainer1 = this.winnerBracket.shift();
@@ -781,6 +786,11 @@ class gameMaster {
         } vs ${trainer2.name} `,
         "background: linear-gradient(to bottom, #33ccff 0%, #ff0000 100%); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px;"
       );
+      alert(
+        `${gameNumber.toUpperCase()} - UPPER BRACKET MATCH IS BETWEEN ${
+          trainer1.name
+        } vs ${trainer2.name} `
+      );
     } else if (gameNumber == "game4" || gameNumber == "game5") {
       // using shit the get the first trainer
       trainer1 = this.loserBracket.shift();
@@ -790,6 +800,11 @@ class gameMaster {
           trainer1.name
         } vs ${trainer2.name} `,
         "background: linear-gradient(to bottom, #33ccff 0%, #ff0000 100%); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px;"
+      );
+      alert(
+        `${gameNumber.toUpperCase()} - LOWER BRACKET MATCH IS BETWEEN ${
+          trainer1.name
+        } vs ${trainer2.name} `
       );
     }
     this.battle(trainer1, trainer2, gameNumber, true);
@@ -809,6 +824,11 @@ class gameMaster {
         } vs ${trainer2.name} `,
         "background: linear-gradient(to bottom, #33ccff 0%, #ff0000 100%); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px;"
       );
+      alert(
+        `${gameNumber.toUpperCase()} - UPPER BRACKET MATCH IS BETWEEN ${
+          trainer1.name
+        } vs ${trainer2.name} `
+      );
     } else if (gameNumber == "game3") {
       trainer1 = this.loserBracket.shift();
       trainer2 = this.loserBracket.shift();
@@ -817,6 +837,11 @@ class gameMaster {
           trainer1.name
         } vs ${trainer2.name} `,
         "background: linear-gradient(to bottom, #33ccff 0%, #ff0000 100%); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px;"
+      );
+      alert(
+        `${gameNumber.toUpperCase()} - LOWER BRACKET MATCH IS BETWEEN ${
+          trainer1.name
+        } vs ${trainer2.name} `
       );
     }
     this.battle(trainer1, trainer2, gameNumber, false);
@@ -845,6 +870,7 @@ class gameMaster {
           `%c⚔️ ${trainer1.name} has no pokemon left. ${trainer2.name} wins the battle! 🏆`,
           "background: linear-gradient(to right, #ff0000, #ffcc00); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);"
         );
+        alert(`${trainer1.name} has no pokemon left. ${trainer2.name} wins!`);
         // check if the battle is for 5 or 4 trainers
         if (isBattleFor5) {
           // check if the game is game1, game2, game3
@@ -869,6 +895,9 @@ class gameMaster {
               `%c💀 ${trainer1.name} has been eliminated from the tournament`,
               "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
             );
+            alert(
+              `💀 ${trainer1.name} has been eliminated from the tournament`
+            );
             trainer1.allPokemonBecomeStrong();
             trainer2.allPokemonBecomeStrong();
             this.loserBracket.push(trainer2);
@@ -876,6 +905,9 @@ class gameMaster {
             console.log(
               `%c💀 ${trainer1.name} has been eliminated from the tournament`,
               "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
+            );
+            alert(
+              `💀 ${trainer1.name} has been eliminated from the tournament`
             );
             trainer1.allPokemonBecomeStrong();
             trainer2.allPokemonBecomeStrong();
@@ -901,6 +933,9 @@ class gameMaster {
               `%c💀 ${trainer1.name} has been eliminated from the tournament`,
               "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
             );
+            alert(
+              `💀 ${trainer1.name} has been eliminated from the tournament`
+            );
             trainer1.allPokemonBecomeStrong();
             trainer2.allPokemonBecomeStrong();
             this.winnerBracket.push(trainer2);
@@ -917,6 +952,7 @@ class gameMaster {
           `%c⚔️ ${trainer2.name} has no pokemon left. ${trainer1.name} wins the battle! 🏆`,
           "background: linear-gradient(to right, #ff0000, #ffcc00); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px;"
         );
+        alert(`${trainer2.name} has no pokemon left. ${trainer1.name} wins!`);
         // check if the battle is for 5 or 4 trainers
         // check if the game is game1, game2, game3
         // and push or eliminate the trainer to the bracket depending on the game
@@ -941,6 +977,9 @@ class gameMaster {
               `%c💀 ${trainer2.name} has been eliminated from the tournament`,
               "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
             );
+            alert(
+              `💀 ${trainer2.name} has been eliminated from the tournament`
+            );
             trainer1.allPokemonBecomeStrong();
             trainer2.allPokemonBecomeStrong();
             this.loserBracket.push(trainer1);
@@ -949,6 +988,9 @@ class gameMaster {
               `%c💀 ${trainer2.name} has been eliminated from the tournament`,
               "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
             );
+            alert(
+              `💀 ${trainer2.name} has been eliminated from the tournament`
+            );
             trainer1.allPokemonBecomeStrong();
             trainer2.allPokemonBecomeStrong();
             this.winnerBracket.push(trainer1);
@@ -956,10 +998,9 @@ class gameMaster {
         } else {
           if (gameNumber == "game1" || gameNumber == "game2") {
             console.log(
-              `%c💀 ${trainer2.name} has been eliminated from the tournament`,
-              "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
+              `%c⚔️ ${trainer2.name} has been sent to the loser bracket`,
+              "background: linear-gradient(to right, #808080, #d3d3d3); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
             );
-
             trainer1.allPokemonBecomeStrong();
             trainer2.allPokemonBecomeStrong();
             this.winnerBracket.push(trainer1);
@@ -968,6 +1009,9 @@ class gameMaster {
             console.log(
               `%c💀 ${trainer2.name} has been eliminated from the tournament`,
               "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
+            );
+            alert(
+              `💀 ${trainer2.name} has been eliminated from the tournament`
             );
             trainer1.allPokemonBecomeStrong();
             trainer2.allPokemonBecomeStrong();
@@ -1171,6 +1215,22 @@ class gameMaster {
       alert("There should be exactly 3 trainers.");
       return;
     }
+    // displaying in console and alert the final 3
+    console.log(
+      `%c🏆 Round Robin Match Finals are about to begin! 🎉`,
+      "color: #fff; background: linear-gradient(to right,rgb(98, 0, 255),rgb(255, 8, 0)); font-size: 16px; padding: 10px; border-radius: 5px; font-weight: bold;"
+    );
+    console.log("\n");
+    console.log(
+      `%c🏆🏆🏆 THE FINAL 3! 🏆🏆🏆`,
+      "color: #fff; background: linear-gradient(to right,rgb(98, 0, 255),rgb(255, 8, 0)); font-size: 16px; padding: 10px; border-radius: 5px; font-weight: bold;"
+    );
+    trainers.forEach(function (trainer, index) {
+      console.log(
+        `%c${index + 1} ${trainer.name}`,
+        "color: #fff; background: linear-gradient(to right,rgb(98, 0, 255),rgb(255, 8, 0)); font-size: 16px; padding: 10px; border-radius: 5px; font-weight: bold; margin: 10x;"
+      );
+    });
     let trainer1, trainer2;
     let trainer1Wins = 0;
 
@@ -1183,6 +1243,10 @@ class gameMaster {
     let wBracket1 = trainers.shift();
     let wBracket2 = trainers.shift();
     let wBracket3 = trainers.shift();
+
+    alert(
+      `🏆 Round Robin Match Finals are about to begin! 🎉\nThe Final 3:\n${wBracket1.name}\n${wBracket2.name}\n${wBracket3.name}`
+    );
     while (currentMatch < 3) {
       if (currentMatch == 0) {
         trainer1 = wBracket1;
@@ -1194,6 +1258,11 @@ class gameMaster {
           } vs ${trainer2.name} ⚔️`,
           "background: linear-gradient(to right, #FFCB05, #3B4CCA); color: white; font-weight: bold; padding: 10px 20px; font-size: 18px; border-radius: 10px; text-transform: uppercase;"
         );
+        alert(
+          `⚔️ ROUND ROBIN MATCH NUMBER: ${currentMatch + 1} IS BETWEEN ${
+            trainer1.name
+          } vs ${trainer2.name} ⚔️`
+        );
       } else if (currentMatch == 1) {
         trainer1 = wBracket1;
         trainer2 = wBracket3;
@@ -1204,6 +1273,11 @@ class gameMaster {
           } vs ${trainer2.name} ⚔️`,
           "background: linear-gradient(to right, #FFCB05, #3B4CCA); color: white; font-weight: bold; padding: 10px 20px; font-size: 18px; border-radius: 10px; text-transform: uppercase;"
         );
+        alert(
+          `⚔️ ROUND ROBIN MATCH NUMBER: ${currentMatch + 1} IS BETWEEN ${
+            trainer1.name
+          } vs ${trainer2.name} ⚔️`
+        );
       } else if (currentMatch == 2) {
         trainer1 = wBracket2;
         trainer2 = wBracket3;
@@ -1213,6 +1287,11 @@ class gameMaster {
             trainer1.name
           } vs ${trainer2.name} ⚔️`,
           "background: linear-gradient(to right, #FFCB05, #3B4CCA); color: white; font-weight: bold; padding: 10px 20px; font-size: 18px; border-radius: 10px; text-transform: uppercase;"
+        );
+        alert(
+          `⚔️ ROUND ROBIN MATCH NUMBER: ${currentMatch + 1} IS BETWEEN ${
+            trainer1.name
+          } vs ${trainer2.name} ⚔️`
         );
       }
 
@@ -1238,11 +1317,14 @@ class gameMaster {
             `%c⚔️ ${trainer1.name} has no pokemon left. ${trainer2.name} wins the battle! 🏆`,
             "background: linear-gradient(to right, #ff0000, #ffcc00); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px; "
           );
-
+          alert(
+            `⚔️ ${trainer1.name} has no pokemon left. ${trainer2.name} wins the battle! 🏆`
+          );
           console.log(
             `%c💀 ${trainer1.name} has been lose`,
             "background: linear-gradient(to right, #000000, #434343); color: white; font-weight: bold; padding: 10px 20px; font-size: 15px; border-radius: 10px;"
           );
+
           trainer1.allPokemonBecomeStrong();
           trainer2.allPokemonBecomeStrong();
           if (currentMatch == 0) {
@@ -1261,11 +1343,12 @@ class gameMaster {
         // check if the trainer2 has no pokemon left
         else if (trainer2Pokemons.length == 0) {
           stillHadPokemon = false;
-
           console.log(
-            `${trainer2.name} has no pokemon left. ` +
-              `%c${trainer1.name} wins the battle!`,
+            `%c${trainer2.name} has no pokemon left. ${trainer1.name} wins the battle!`,
             "font-size: 20px; font-weight: bold"
+          );
+          alert(
+            `${trainer2.name} has no pokemon left. ${trainer1.name} wins the battle!`
           );
           console.log(
             `%c💀 ${trainer2.name} has been lose`,
@@ -1439,7 +1522,7 @@ class gameMaster {
     }
     // display leaderboard
     console.log(
-      `%c${wBracket1.name}: ${trainer1Wins}W  |  ${wBracket2.name}: ${trainer2Wins}W  |  ${wBracket3.name}: ${trainer3Wins}W`,
+      `%c${wBracket1.name}: ${trainer1Wins} W  |  ${wBracket2.name}: ${trainer2Wins} W  |  ${wBracket3.name}: ${trainer3Wins} W`,
       "background: linear-gradient(to right, #FFCB05, #3B4CCA); color: white; font-weight: bold; padding: 10px 20px; font-size: 20px; border-radius: 10px; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);"
     );
     // check who is the winner
@@ -1469,7 +1552,10 @@ class gameMaster {
       );
       console.log(`\n`);
     } else {
-      this.winnerBracket = [wBracket1, wBracket2, wBracket3]; // bring back the winner bracket
+      alert(
+        "Since all 3 finalists are tied with 1 win each, the Round Robin Match Finals will be repeated."
+      );
+      this.winnerBracket = [wBracket1, wBracket2, wBracket3]; // bring back all trainers the winner bracket
       this.roundRobinMatchmaking(this.winnerBracket);
     }
   }
