@@ -728,8 +728,28 @@ class gameMaster {
     if (this.winner) {
       // if the tournament has ended and there is a winner
       alert("The tournament has just ended");
+      // getting the 2 h1 in index.html by id
       const element = document.getElementById("champ");
+      const tourna = document.getElementById("tourna");
+      const toHide = document.getElementById("toHide");
+      // setting the h1 element the name of the champ
       element.innerHTML = this.winner;
+      // set Tourna to Tournament Champion
+      tourna.innerHTML = "Tournament Champion";
+      // hiding the instruction in the start of page
+      toHide.style.display = "none";
+      // This is to generate confetti
+      confetti({
+        particleCount: 300,
+        spread: 90,
+        origin: { x: 1, y: 0.9 },
+      });
+
+      confetti({
+        particleCount: 300,
+        spread: 90,
+        origin: { x: 0, y: 0.9 },
+      });
     }
   }
   // start the match
