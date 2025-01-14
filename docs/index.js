@@ -578,6 +578,29 @@ class Trainer {
     const randomIndex = Math.floor(Math.random() * this.pokemons.length);
     return this.pokemons[randomIndex];
   }
+  // if the trainer become champion
+  levelUp() {
+    // display message
+    console.log(
+      `%c🎉 ${this.name} has leveled up! 🎉`,
+      "color: black; font-size: 20px; font-weight: bold; text-allign; background: yellow; padding: 10px;border-radius: 20px"
+    );
+    // all the pokemons will become legendary
+    this.pokemons = this.pokemons.map(function (pokemon) {
+      // level up the pokemon
+      if (pokemon.level <= 15) {
+        let numberOfLevelUp = 15 - pokemon.level;
+        for (let i = 0; i < numberOfLevelUp; i++) {
+          pokemon.levelUp();
+        }
+      }
+    });
+
+    console.log(
+      `%c⬆⬆⬆ Trainer Level Up Reward: All of ${this.name}'s Pokémon are now level 15 and have become legendary! ⬆⬆⬆`,
+      "color: white; font-size: 16px; padding: 20px; background: blue; font-weight: bold; font-size: 20px;  border-radius: 20px;"
+    );
+  }
 }
 // for game master
 class gameMaster {
@@ -727,13 +750,17 @@ class gameMaster {
 
     if (this.winner) {
       // if the tournament has ended and there is a winner
+      console.log(
+        `%cPlease click "OK" in the prompt`,
+        "background: #f0f0f0; color: black; padding: 10px; font-size: 20px; border-radius: 5px; display: inline-block; margin-top: 5px;"
+      );
       alert("The tournament has just ended");
       // getting the 2 h1 in index.html by id
       const element = document.getElementById("champ");
       const tourna = document.getElementById("tourna");
       const toHide = document.getElementById("toHide");
       // setting the h1 element the name of the champ
-      element.innerHTML = this.winner;
+      element.innerHTML = this.winner.name;
       // set Tourna to Tournament Champion
       tourna.innerHTML = "Tournament Champion";
       // hiding the instruction in the start of page
@@ -750,6 +777,8 @@ class gameMaster {
         spread: 90,
         origin: { x: 0, y: 0.9 },
       });
+      // level up all the winner's pokemon
+      this.winner.levelUp();
     }
   }
   // start the match
@@ -1556,7 +1585,7 @@ class gameMaster {
     // check who is the winner
     // and display the message
     if (trainer1Wins == 2) {
-      this.winner = wBracket1.name;
+      this.winner = wBracket1;
       console.log(`\n`);
       console.log(
         `%c🏆 ${wBracket1.name} has emerged victorious in the tournament and is the ultimate POKEMON CHAMPION! 🏆`,
@@ -1564,7 +1593,7 @@ class gameMaster {
       );
       console.log(`\n`);
     } else if (trainer2Wins == 2) {
-      this.winner = wBracket2.name;
+      this.winner = wBracket2;
       console.log(`\n`);
       console.log(
         `%c🏆 ${wBracket2.name} has emerged victorious in the tournament and is the ultimate POKEMON CHAMPION! 🏆`,
@@ -1572,7 +1601,7 @@ class gameMaster {
       );
       console.log(`\n`);
     } else if (trainer3Wins == 2) {
-      this.winner = wBracket3.name;
+      this.winner = wBracket3;
       console.log(`\n`);
       console.log(
         `%c🏆 ${wBracket3.name} has emerged victorious in the tournament and is the ultimate POKEMON CHAMPION! 🏆`,
